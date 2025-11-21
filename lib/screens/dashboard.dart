@@ -59,6 +59,11 @@ class _DashboardScreenState extends State<DashboardScreen> {
         title: const Text('Dashboard'),
         actions: [
           IconButton(
+            icon: const Icon(Icons.history),
+            tooltip: 'History & Reports',
+            onPressed: () => Navigator.pushNamed(context, '/history'),
+          ),
+          IconButton(
             icon: const Icon(Icons.category),
             tooltip: 'Categories',
             onPressed: () => Navigator.pushNamed(context, '/categories'),

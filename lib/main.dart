@@ -4,6 +4,7 @@ import 'screens/dashboard.dart';
 import 'screens/add_transaction.dart';
 import 'screens/settings.dart';
 import 'screens/categories.dart';
+import 'screens/history_reports.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -30,6 +31,7 @@ class MyApp extends StatelessWidget {
         '/add': (context) => const AddTransactionScreen(),
         '/settings': (context) => const SettingsScreen(),
         '/categories': (context) => const CategoriesScreen(),
+        '/history': (context) => const HistoryReportsScreen(),
       },
     );
   }

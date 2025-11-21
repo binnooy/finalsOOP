@@ -93,7 +93,8 @@ class _AddTransactionScreenState extends State<AddTransactionScreen> {
                     if (mounted) {
                       Navigator.of(context).pop();
                       ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(content: Text('Category "$newCategory" added')),
+                        SnackBar(
+                            content: Text('Category "$newCategory" added')),
                       );
                     }
                   } catch (e) {
@@ -228,7 +229,9 @@ class _AddTransactionScreenState extends State<AddTransactionScreen> {
                             onSaved: (v) => _category = v ?? 'Other',
                           )
                         : DropdownButtonFormField<String>(
-                            value: _category.isEmpty ? _categories.first : _category,
+                            value: _category.isEmpty
+                                ? _categories.first
+                                : _category,
                             decoration: const InputDecoration(
                               labelText: 'Category',
                               border: OutlineInputBorder(),
@@ -240,12 +243,11 @@ class _AddTransactionScreenState extends State<AddTransactionScreen> {
                                       child: Text(cat),
                                     ))
                                 .toList(),
-                            onChanged: (v) =>
-                                setState(() => _category = v ?? _categories.first),
-                            validator: (v) =>
-                                (v == null || v.isEmpty)
-                                    ? 'Select a category'
-                                    : null,
+                            onChanged: (v) => setState(
+                                () => _category = v ?? _categories.first),
+                            validator: (v) => (v == null || v.isEmpty)
+                                ? 'Select a category'
+                                : null,
                           ),
                   ),
                   const SizedBox(width: 8),
@@ -263,7 +265,8 @@ class _AddTransactionScreenState extends State<AddTransactionScreen> {
                 child: ListTile(
                   leading: const Icon(Icons.calendar_today),
                   title: const Text('Date'),
-                  subtitle: Text(_selectedDate.toLocal().toString().split(' ').first),
+                  subtitle:
+                      Text(_selectedDate.toLocal().toString().split(' ').first),
                   trailing: const Icon(Icons.arrow_forward_ios),
                   onTap: () => _selectDate(context),
                 ),
@@ -290,7 +293,8 @@ class _AddTransactionScreenState extends State<AddTransactionScreen> {
                 label: const Padding(
                   padding: EdgeInsets.symmetric(vertical: 12.0),
                   child: Text('Save Transaction',
-                      style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600)),
+                      style:
+                          TextStyle(fontSize: 16, fontWeight: FontWeight.w600)),
                 ),
               ),
               const SizedBox(height: 16),
@@ -310,4 +314,3 @@ class _AddTransactionScreenState extends State<AddTransactionScreen> {
     );
   }
 }
-
