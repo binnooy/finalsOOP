@@ -5,7 +5,8 @@ import '../services/transaction_service.dart';
 class EditTransactionScreen extends StatefulWidget {
   final String transactionId;
 
-  const EditTransactionScreen({Key? key, required this.transactionId}) : super(key: key);
+  const EditTransactionScreen({Key? key, required this.transactionId})
+      : super(key: key);
 
   @override
   State<EditTransactionScreen> createState() => _EditTransactionScreenState();
@@ -77,30 +78,38 @@ class _EditTransactionScreenState extends State<EditTransactionScreen> {
           child: ListView(
             children: [
               TextFormField(
-                decoration: const InputDecoration(labelText: 'Description', border: OutlineInputBorder()),
+                decoration: const InputDecoration(
+                    labelText: 'Description', border: OutlineInputBorder()),
                 initialValue: _description,
                 onSaved: (v) => _description = v ?? '',
-                validator: (v) => (v == null || v.isEmpty) ? 'Enter description' : null,
+                validator: (v) =>
+                    (v == null || v.isEmpty) ? 'Enter description' : null,
               ),
               const SizedBox(height: 12),
               TextFormField(
-                decoration: const InputDecoration(labelText: 'Amount (₱)', border: OutlineInputBorder()),
+                decoration: const InputDecoration(
+                    labelText: 'Amount (₱)', border: OutlineInputBorder()),
                 keyboardType: TextInputType.numberWithOptions(decimal: true),
                 initialValue: _amount.toString(),
                 onSaved: (v) => _amount = double.tryParse(v ?? '') ?? 0.0,
-                validator: (v) => (v == null || double.tryParse(v) == null) ? 'Enter valid amount' : null,
+                validator: (v) => (v == null || double.tryParse(v) == null)
+                    ? 'Enter valid amount'
+                    : null,
               ),
               const SizedBox(height: 12),
               TextFormField(
-                decoration: const InputDecoration(labelText: 'Category', border: OutlineInputBorder()),
+                decoration: const InputDecoration(
+                    labelText: 'Category', border: OutlineInputBorder()),
                 initialValue: _category,
                 onSaved: (v) => _category = v ?? 'General',
               ),
               const SizedBox(height: 12),
               SegmentedButton<TransactionType>(
                 segments: const [
-                  ButtonSegment(value: TransactionType.income, label: Text('Income')),
-                  ButtonSegment(value: TransactionType.expense, label: Text('Expense')),
+                  ButtonSegment(
+                      value: TransactionType.income, label: Text('Income')),
+                  ButtonSegment(
+                      value: TransactionType.expense, label: Text('Expense')),
                 ],
                 selected: {_type},
                 onSelectionChanged: (v) => setState(() => _type = v.first),
@@ -110,7 +119,8 @@ class _EditTransactionScreenState extends State<EditTransactionScreen> {
                 onPressed: _save,
                 child: const Padding(
                   padding: EdgeInsets.symmetric(vertical: 12.0),
-                  child: Text('Update Transaction', style: TextStyle(fontSize: 16)),
+                  child: Text('Update Transaction',
+                      style: TextStyle(fontSize: 16)),
                 ),
               ),
             ],
