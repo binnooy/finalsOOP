@@ -10,6 +10,7 @@ class CategoriesScreen extends StatefulWidget {
 
 class _CategoriesScreenState extends State<CategoriesScreen> {
   late Future<List<String>> _categoriesFuture;
+  bool _changed = false;
 
   @override
   void initState() {
@@ -49,6 +50,7 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
                 if (newCategory.isNotEmpty) {
                   try {
                     await CategoryService().add(newCategory);
+                    _changed = true;
                     _loadCategories();
                     if (mounted) {
                       Navigator.of(context).pop();
@@ -68,7 +70,8 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
                   }
                 } else {
                   ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(content: Text('Category name cannot be empty')),
+                    const SnackBar(
+                        content: Text('Category name cannot be empty')),
                   );
                 }
               },
@@ -108,6 +111,7 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
                     // Delete old category and add new one
                     await CategoryService().delete(oldCategory);
                     await CategoryService().add(newCategory);
+                    _changed = true;
                     _loadCategories();
                     if (mounted) {
                       Navigator.of(context).pop();
@@ -127,7 +131,8 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
                   }
                 } else if (newCategory.isEmpty) {
                   ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(content: Text('Category name cannot be empty')),
+                    const SnackBar(
+                        content: Text('Category name cannot be empty')),
                   );
                 } else {
                   Navigator.of(context).pop();
@@ -157,6 +162,7 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
               onPressed: () async {
                 try {
                   await CategoryService().delete(category);
+                  _changed = true;
                   _loadCategories();
                   if (mounted) {
                     Navigator.of(context).pop();
@@ -185,67 +191,79 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Categories'),
-        elevation: 0,
-      ),
-      body: FutureBuilder<List<String>>(
-        future: _categoriesFuture,
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return const Center(child: CircularProgressIndicator());
-          }
+    return WillPopScope(
+      onWillPop: () async {
+        Navigator.of(context).pop(_changed);
+        return false;
+      },
+      child: Scaffold(
+        appBar: AppBar(
+          title: const Text('Categories'),
+          elevation: 0,
+          iconTheme: const IconThemeData(color: Color.fromARGB(255, 0, 150, 2)),
+          actions: [
+            IconButton(
+              icon:
+                  const Icon(Icons.add, color: Color.fromARGB(255, 0, 150, 67)),
+              tooltip: 'Add Category',
+              onPressed: _addCategory,
+            ),
+          ],
+        ),
+        body: FutureBuilder<List<String>>(
+          future: _categoriesFuture,
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return const Center(child: CircularProgressIndicator());
+            }
 
-          if (!snapshot.hasData || snapshot.data!.isEmpty) {
-            return const Center(
-              child: Text('No categories found'),
-            );
-          }
+            if (!snapshot.hasData || snapshot.data!.isEmpty) {
+              return const Center(
+                child: Text('No categories found'),
+              );
+            }
 
-          final categories = snapshot.data!;
-          return ListView.builder(
-            itemCount: categories.length,
-            itemBuilder: (context, index) {
-              final category = categories[index];
-              return Card(
-                margin: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-                child: ListTile(
-                  leading: CircleAvatar(
-                    backgroundColor: Colors.teal[100],
-                    child: Icon(
-                      Icons.category,
-                      color: Colors.teal,
+            final categories = snapshot.data!;
+            return ListView.builder(
+              itemCount: categories.length,
+              itemBuilder: (context, index) {
+                final category = categories[index];
+                return Card(
+                  margin:
+                      const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                  child: ListTile(
+                    leading: CircleAvatar(
+                      backgroundColor: const Color.fromARGB(255, 59, 221, 10),
+                      child: Icon(
+                        Icons.category,
+                        color: const Color.fromARGB(224, 0, 150, 135),
+                      ),
+                    ),
+                    title: Text(category),
+                    trailing: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        // Edit button
+                        IconButton(
+                          icon: const Icon(Icons.edit, color: Colors.blue),
+                          tooltip: 'Edit',
+                          onPressed: () => _editCategory(category),
+                        ),
+                        // Delete button
+                        IconButton(
+                          icon: const Icon(Icons.delete, color: Colors.red),
+                          tooltip: 'Delete',
+                          onPressed: () => _deleteCategory(category),
+                        ),
+                      ],
                     ),
                   ),
-                  title: Text(category),
-                  trailing: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      // Edit button
-                      IconButton(
-                        icon: const Icon(Icons.edit, color: Colors.blue),
-                        tooltip: 'Edit',
-                        onPressed: () => _editCategory(category),
-                      ),
-                      // Delete button
-                      IconButton(
-                        icon: const Icon(Icons.delete, color: Colors.red),
-                        tooltip: 'Delete',
-                        onPressed: () => _deleteCategory(category),
-                      ),
-                    ],
-                  ),
-                ),
-              );
-            },
-          );
-        },
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _addCategory,
-        tooltip: 'Add Category',
-        child: const Icon(Icons.add),
+                );
+              },
+            );
+          },
+        ),
+        // FloatingActionButton removed to avoid overlapping list items on small screens.
       ),
     );
   }

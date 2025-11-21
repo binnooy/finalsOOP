@@ -5,7 +5,7 @@ import 'add_transaction_local_datasource.dart';
 class AddTransactionLocalDataSourceImpl
     implements AddTransactionLocalDataSource {
   static const String transactionsBoxName = 'addTransactions';
-  static const String categoriesBoxName = 'addCategories';
+  static const String categoriesBoxName = 'categories';
 
   @override
   Future<AddTransactionModel> addTransaction(
