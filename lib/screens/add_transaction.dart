@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 import '../models/transaction.dart';
 import '../services/transaction_service.dart';
 import '../services/category_service.dart';
@@ -19,6 +20,8 @@ class _AddTransactionScreenState extends State<AddTransactionScreen> {
   late DateTime _selectedDate;
   late String _notes;
   late List<String> _categories;
+  late final Box<String> _categoriesBox;
+  late final VoidCallback _categoriesBoxListener;
 
   @override
   void initState() {
@@ -31,6 +34,22 @@ class _AddTransactionScreenState extends State<AddTransactionScreen> {
     _notes = '';
     _categories = [];
     _loadCategories();
+    // Listen for changes in the categories Hive box and reload when they occur
+    try {
+      _categoriesBox = Hive.box<String>('categories');
+      _categoriesBoxListener = () => _loadCategories();
+      _categoriesBox.listenable().addListener(_categoriesBoxListener);
+    } catch (_) {
+      // Box might not be open yet; _loadCategories will open it when ready.
+    }
+  }
+
+  @override
+  void dispose() {
+    try {
+      _categoriesBox.listenable().removeListener(_categoriesBoxListener);
+    } catch (_) {}
+    super.dispose();
   }
 
   Future<void> _loadCategories() async {

@@ -37,13 +37,12 @@ Future<void> initializeHive() async {
   if (!Hive.isBoxOpen('addTransactions')) {
     await Hive.openBox<AddTransactionModel>('addTransactions');
   }
-
-  if (!Hive.isBoxOpen('addCategories')) {
-    await Hive.openBox<String>('addCategories');
+  if (!Hive.isBoxOpen('categories')) {
+    await Hive.openBox<String>('categories');
   }
 
   // Add default categories if box is empty
-  final categoriesBox = Hive.box<String>('addCategories');
+  final categoriesBox = Hive.box<String>('categories');
   if (categoriesBox.isEmpty) {
     final defaults = [
       'Food',
