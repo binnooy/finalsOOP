@@ -44,7 +44,8 @@ class TransactionLocalDataSourceImpl implements TransactionLocalDataSource {
   }
 
   @override
-  Future<void> updateTransaction(String id, TransactionEntity transaction) async {
+  Future<void> updateTransaction(
+      String id, TransactionEntity transaction) async {
     try {
       final box = Hive.box<TransactionModel>(boxName);
       for (int i = 0; i < box.length; i++) {
