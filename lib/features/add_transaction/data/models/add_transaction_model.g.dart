@@ -1,34 +1,34 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'transaction.dart';
+part of 'add_transaction_model.dart';
 
 // **************************************************************************
 // TypeAdapterGenerator
 // **************************************************************************
 
-class TransactionModelAdapter extends TypeAdapter<TransactionModel> {
+class AddTransactionModelAdapter extends TypeAdapter<AddTransactionModel> {
   @override
-  final int typeId = 1;
+  final int typeId = 3;
 
   @override
-  TransactionModel read(BinaryReader reader) {
+  AddTransactionModel read(BinaryReader reader) {
     final numOfFields = reader.readByte();
     final fields = <int, dynamic>{
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
-    return TransactionModel(
+    return AddTransactionModel(
       id: fields[0] as String?,
       description: fields[1] as String,
       category: fields[2] as String,
       amount: fields[3] as double,
       date: fields[4] as DateTime,
-      type: fields[5] as TransactionType,
-      notes: fields[6] as String?,
+      type: fields[5] as TransactionTypeModel,
+      notes: fields[6] as String,
     );
   }
 
   @override
-  void write(BinaryWriter writer, TransactionModel obj) {
+  void write(BinaryWriter writer, AddTransactionModel obj) {
     writer
       ..writeByte(7)
       ..writeByte(0)
@@ -53,34 +53,34 @@ class TransactionModelAdapter extends TypeAdapter<TransactionModel> {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is TransactionModelAdapter &&
+      other is AddTransactionModelAdapter &&
           runtimeType == other.runtimeType &&
           typeId == other.typeId;
 }
 
-class TransactionTypeAdapter extends TypeAdapter<TransactionType> {
+class TransactionTypeModelAdapter extends TypeAdapter<TransactionTypeModel> {
   @override
-  final int typeId = 0;
+  final int typeId = 2;
 
   @override
-  TransactionType read(BinaryReader reader) {
+  TransactionTypeModel read(BinaryReader reader) {
     switch (reader.readByte()) {
       case 0:
-        return TransactionType.income;
+        return TransactionTypeModel.income;
       case 1:
-        return TransactionType.expense;
+        return TransactionTypeModel.expense;
       default:
-        return TransactionType.income;
+        return TransactionTypeModel.income;
     }
   }
 
   @override
-  void write(BinaryWriter writer, TransactionType obj) {
+  void write(BinaryWriter writer, TransactionTypeModel obj) {
     switch (obj) {
-      case TransactionType.income:
+      case TransactionTypeModel.income:
         writer.writeByte(0);
         break;
-      case TransactionType.expense:
+      case TransactionTypeModel.expense:
         writer.writeByte(1);
         break;
     }
@@ -92,7 +92,7 @@ class TransactionTypeAdapter extends TypeAdapter<TransactionType> {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is TransactionTypeAdapter &&
+      other is TransactionTypeModelAdapter &&
           runtimeType == other.runtimeType &&
           typeId == other.typeId;
 }

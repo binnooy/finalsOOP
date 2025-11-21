@@ -40,7 +40,8 @@ class SummaryCard extends StatelessWidget {
             const SizedBox(height: 8),
             Text(
               amount,
-              style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: color),
+              style: TextStyle(
+                  fontSize: 16, fontWeight: FontWeight.bold, color: color),
             ),
           ],
         ),

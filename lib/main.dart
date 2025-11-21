@@ -7,10 +7,10 @@ import 'screens/categories.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  
+
   // Initialize Hive with all adapters and boxes
   await initializeHive();
-  
+
   runApp(const MyApp());
 }
 

@@ -10,7 +10,8 @@ class TransactionRepositoryImpl implements TransactionRepository {
   TransactionRepositoryImpl({required this.localDataSource});
 
   @override
-  Future<Either<Failure, void>> addTransaction(TransactionEntity transaction) async {
+  Future<Either<Failure, void>> addTransaction(
+      TransactionEntity transaction) async {
     try {
       await localDataSource.addTransaction(transaction);
       return const Right(null);
@@ -30,7 +31,8 @@ class TransactionRepositoryImpl implements TransactionRepository {
   }
 
   @override
-  Future<Either<Failure, TransactionEntity?>> getTransactionById(String id) async {
+  Future<Either<Failure, TransactionEntity?>> getTransactionById(
+      String id) async {
     try {
       final transaction = await localDataSource.getTransactionById(id);
       return Right(transaction);
@@ -40,7 +42,8 @@ class TransactionRepositoryImpl implements TransactionRepository {
   }
 
   @override
-  Future<Either<Failure, void>> updateTransaction(String id, TransactionEntity transaction) async {
+  Future<Either<Failure, void>> updateTransaction(
+      String id, TransactionEntity transaction) async {
     try {
       await localDataSource.updateTransaction(id, transaction);
       return const Right(null);

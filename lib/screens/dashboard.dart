@@ -39,11 +39,13 @@ class _DashboardScreenState extends State<DashboardScreen> {
     return all;
   }
 
-  double _totalIncome(List<TransactionModel> list) =>
-      list.where((t) => t.type == TransactionType.income).fold(0.0, (p, e) => p + e.amount);
+  double _totalIncome(List<TransactionModel> list) => list
+      .where((t) => t.type == TransactionType.income)
+      .fold(0.0, (p, e) => p + e.amount);
 
-  double _totalExpenses(List<TransactionModel> list) =>
-      list.where((t) => t.type == TransactionType.expense).fold(0.0, (p, e) => p + e.amount);
+  double _totalExpenses(List<TransactionModel> list) => list
+      .where((t) => t.type == TransactionType.expense)
+      .fold(0.0, (p, e) => p + e.amount);
 
   Future<void> _deleteTransaction(String id) async {
     await TransactionService().deleteById(id);
@@ -75,7 +77,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
             return const Center(child: CircularProgressIndicator());
           }
           if (!snapshot.hasData || snapshot.data!.isEmpty) {
-            return const Center(child: Text('No transactions yet. Tap + to add one.'));
+            return const Center(
+                child: Text('No transactions yet. Tap + to add one.'));
           }
 
           final all = snapshot.data!;
@@ -129,11 +132,14 @@ class _DashboardScreenState extends State<DashboardScreen> {
                   ],
                 ),
                 const SizedBox(height: 12),
-                const Text('Recent transactions', style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600)),
+                const Text('Recent transactions',
+                    style:
+                        TextStyle(fontSize: 16, fontWeight: FontWeight.w600)),
                 const SizedBox(height: 8),
                 Expanded(
                   child: list.isEmpty
-                      ? const Center(child: Text('No transactions in this period'))
+                      ? const Center(
+                          child: Text('No transactions in this period'))
                       : ListView.separated(
                           itemCount: list.length,
                           separatorBuilder: (_, __) => const Divider(),
@@ -141,18 +147,29 @@ class _DashboardScreenState extends State<DashboardScreen> {
                             final t = list[i];
                             return ListTile(
                               leading: CircleAvatar(
-                                backgroundColor: t.type == TransactionType.income ? Colors.green[100] : Colors.red[100],
+                                backgroundColor:
+                                    t.type == TransactionType.income
+                                        ? Colors.green[100]
+                                        : Colors.red[100],
                                 child: Icon(
-                                  t.type == TransactionType.income ? Icons.arrow_downward : Icons.arrow_upward,
-                                  color: t.type == TransactionType.income ? Colors.green : Colors.red,
+                                  t.type == TransactionType.income
+                                      ? Icons.arrow_downward
+                                      : Icons.arrow_upward,
+                                  color: t.type == TransactionType.income
+                                      ? Colors.green
+                                      : Colors.red,
                                 ),
                               ),
                               title: Text(t.description),
-                              subtitle: Text('${t.category} • ${t.date.toLocal().toString().split(' ').first}'),
+                              subtitle: Text(
+                                  '${t.category} • ${t.date.toLocal().toString().split(' ').first}'),
                               trailing: Text(
-                                (t.type == TransactionType.income ? '+' : '-') + '₱${t.amount.toStringAsFixed(2)}',
+                                (t.type == TransactionType.income ? '+' : '-') +
+                                    '₱${t.amount.toStringAsFixed(2)}',
                                 style: TextStyle(
-                                  color: t.type == TransactionType.income ? Colors.green : Colors.red,
+                                  color: t.type == TransactionType.income
+                                      ? Colors.green
+                                      : Colors.red,
                                   fontWeight: FontWeight.bold,
                                 ),
                               ),
@@ -160,7 +177,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                 final result = await Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                    builder: (_) => EditTransactionScreen(transactionId: t.id),
+                                    builder: (_) => EditTransactionScreen(
+                                        transactionId: t.id),
                                   ),
                                 );
                                 if (result == true) {
@@ -183,7 +201,9 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                           Navigator.pop(context);
                                           _deleteTransaction(t.id);
                                         },
-                                        child: const Text('Delete', style: TextStyle(color: Colors.red)),
+                                        child: const Text('Delete',
+                                            style:
+                                                TextStyle(color: Colors.red)),
                                       ),
                                     ],
                                   ),
