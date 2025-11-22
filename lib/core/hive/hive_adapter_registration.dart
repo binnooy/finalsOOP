@@ -41,6 +41,11 @@ Future<void> initializeHive() async {
     await Hive.openBox<String>('categories');
   }
 
+  // Open settings box for app preferences
+  if (!Hive.isBoxOpen('settings')) {
+    await Hive.openBox('settings');
+  }
+
   // Add default categories if box is empty
   final categoriesBox = Hive.box<String>('categories');
   if (categoriesBox.isEmpty) {

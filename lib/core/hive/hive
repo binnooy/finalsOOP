@@ -1,0 +1,33 @@
+import 'package:hive_flutter/hive_flutter.dart';
+import '../../models/transaction.dart';
+import '../../features/add_transaction/data/models/add_transaction_model.dart';
+import '../../features/history_reports/data/models/history_report_model.dart';
+
+Future<void> initializeHive() async {
+  await Hive.initFlutter();
+
+  // Register adapters
+  Hive.registerAdapter(TransactionTypeAdapter());
+  Hive.registerAdapter(TransactionModelAdapter());
+  Hive.registerAdapter(AddTransactionModelAdapter());
+  Hive.registerAdapter(TransactionTypeModelAdapter());
+  Hive.registerAdapter(HistoryReportModelAdapter());
+
+  // Open boxes once
+  await Hive.openBox<TransactionModel>('transactions');
+  await Hive.openBox<AddTransactionModel>('addTransactions');
+  await Hive.openBox<String>('categories');
+  await Hive.openBox('settings');
+
+  // Add default categories if needed
+  final catBox = Hive.box<String>('categories');
+  if (catBox.isEmpty) {
+    final defaults = [
+      'Food', 'Transport', 'Entertainment', 'Bills',
+      'Health', 'Shopping', 'Salary', 'Freelance', 'Other',
+    ];
+    for (var category in defaults) {
+      await catBox.add(category);
+    }
+  }
+}

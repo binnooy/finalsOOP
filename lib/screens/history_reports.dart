@@ -1,16 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../models/transaction.dart';
 import '../services/transaction_service.dart';
+import '../utils/currency_formatter.dart';
 import 'edit_transaction.dart';
 
-class HistoryReportsScreen extends StatefulWidget {
+class HistoryReportsScreen extends ConsumerStatefulWidget {
   const HistoryReportsScreen({Key? key}) : super(key: key);
 
   @override
-  State<HistoryReportsScreen> createState() => _HistoryReportsScreenState();
+  ConsumerState<HistoryReportsScreen> createState() =>
+      _HistoryReportsScreenState();
 }
 
-class _HistoryReportsScreenState extends State<HistoryReportsScreen> {
+class _HistoryReportsScreenState extends ConsumerState<HistoryReportsScreen> {
   late Future<List<TransactionModel>> _transactionsFuture;
 
   // Filter states
@@ -378,7 +381,7 @@ class _HistoryReportsScreenState extends State<HistoryReportsScreen> {
   }
 }
 
-class _TransactionTile extends StatelessWidget {
+class _TransactionTile extends ConsumerWidget {
   final TransactionModel transaction;
   final VoidCallback onTap;
 
@@ -428,7 +431,7 @@ class _TransactionTile extends StatelessWidget {
   }
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final isExpense = transaction.type == TransactionType.expense;
     final amountColor = isExpense ? Colors.red : Colors.green;
     final amountSign = isExpense ? '-' : '+';
@@ -473,7 +476,7 @@ class _TransactionTile extends StatelessWidget {
           ],
         ),
         trailing: Text(
-          '$amountSign₱${transaction.amount.toStringAsFixed(2)}',
+          '$amountSign${CurrencyFormatter.getSymbol(ref)}${transaction.amount.toStringAsFixed(2)}',
           style: TextStyle(
             fontSize: 16,
             fontWeight: FontWeight.bold,
@@ -501,7 +504,7 @@ class _TransactionTile extends StatelessWidget {
   }
 }
 
-class _TransactionDetailsSheet extends StatelessWidget {
+class _TransactionDetailsSheet extends ConsumerWidget {
   final TransactionModel transaction;
   final VoidCallback onEdit;
   final VoidCallback onDelete;
@@ -513,7 +516,7 @@ class _TransactionDetailsSheet extends StatelessWidget {
   });
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final isExpense = transaction.type == TransactionType.expense;
     final amountColor = isExpense ? Colors.red : Colors.green;
     final amountSign = isExpense ? '-' : '+';
@@ -547,7 +550,7 @@ class _TransactionDetailsSheet extends StatelessWidget {
             child: Column(
               children: [
                 Text(
-                  '$amountSign₱${transaction.amount.toStringAsFixed(2)}',
+                  '$amountSign${CurrencyFormatter.getSymbol(ref)}${transaction.amount.toStringAsFixed(2)}',
                   style: TextStyle(
                     fontSize: 36,
                     fontWeight: FontWeight.bold,
@@ -637,13 +640,13 @@ class _DetailRow extends StatelessWidget {
   }
 }
 
-class _SummaryStats extends StatelessWidget {
+class _SummaryStats extends ConsumerWidget {
   final List<TransactionModel> transactions;
 
   const _SummaryStats({required this.transactions});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final income = transactions
         .where((t) => t.type == TransactionType.income)
         .fold(0.0, (sum, t) => sum + t.amount);
@@ -669,7 +672,7 @@ class _SummaryStats extends StatelessWidget {
               ),
               const SizedBox(height: 4),
               Text(
-                '+₱${income.toStringAsFixed(2)}',
+                '+${CurrencyFormatter.getSymbol(ref)}${income.toStringAsFixed(2)}',
                 style: const TextStyle(
                   fontSize: 14,
                   fontWeight: FontWeight.bold,
@@ -686,7 +689,7 @@ class _SummaryStats extends StatelessWidget {
               ),
               const SizedBox(height: 4),
               Text(
-                '-₱${expenses.toStringAsFixed(2)}',
+                '-${CurrencyFormatter.getSymbol(ref)}${expenses.toStringAsFixed(2)}',
                 style: const TextStyle(
                   fontSize: 14,
                   fontWeight: FontWeight.bold,
@@ -703,7 +706,7 @@ class _SummaryStats extends StatelessWidget {
               ),
               const SizedBox(height: 4),
               Text(
-                '₱${balance.toStringAsFixed(2)}',
+                '${CurrencyFormatter.getSymbol(ref)}${balance.toStringAsFixed(2)}',
                 style: TextStyle(
                   fontSize: 14,
                   fontWeight: FontWeight.bold,

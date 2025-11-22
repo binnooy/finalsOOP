@@ -12,7 +12,7 @@ class CategoryService {
     return _instance;
   }
 
-  // Get the Hive box (must call initBox first)
+  // Get the Hive box (smust call initBox first)
   Future<Box<String>> _getBox() async {
     if (!Hive.isBoxOpen(boxName)) {
       return await Hive.openBox<String>(boxName);

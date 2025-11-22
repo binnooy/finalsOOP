@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import '../utils/currency_formatter.dart';
 
-class SummaryCard extends StatelessWidget {
+class SummaryCard extends ConsumerWidget {
   final String title;
-  final String amount;
+  final double amount;
   final Color color;
   final IconData icon;
 
@@ -15,7 +17,9 @@ class SummaryCard extends StatelessWidget {
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final formattedAmount = CurrencyFormatter.format(ref, amount);
+
     return Card(
       elevation: 2,
       child: Container(
@@ -39,7 +43,7 @@ class SummaryCard extends StatelessWidget {
             ),
             const SizedBox(height: 8),
             Text(
-              amount,
+              formattedAmount,
               style: TextStyle(
                   fontSize: 16, fontWeight: FontWeight.bold, color: color),
             ),
