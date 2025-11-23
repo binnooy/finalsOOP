@@ -4,6 +4,7 @@ import '../../services/category_service.dart';
 import '../../services/transaction_service.dart';
 import '../../features/add_transaction/data/models/add_transaction_model.dart';
 import '../../features/history_reports/data/models/history_report_model.dart';
+import '../../features/settings/data/models/settings_model.dart';
 
 /// Central place to register all Hive adapters
 Future<void> registerHiveAdapters() async {
@@ -23,6 +24,11 @@ Future<void> registerHiveAdapters() async {
   if (!Hive.isAdapterRegistered(4)) {
     Hive.registerAdapter(HistoryReportModelAdapter());
   }
+
+  // Register Settings adapter
+  if (!Hive.isAdapterRegistered(10)) {
+    Hive.registerAdapter(SettingsModelAdapter());
+  }
 }
 
 /// Initialize Hive with all boxes
@@ -39,6 +45,11 @@ Future<void> initializeHive() async {
   }
   if (!Hive.isBoxOpen('categories')) {
     await Hive.openBox<String>('categories');
+  }
+
+  // Open settings box for app preferences
+  if (!Hive.isBoxOpen('settings')) {
+    await Hive.openBox('settings');
   }
 
   // Add default categories if box is empty

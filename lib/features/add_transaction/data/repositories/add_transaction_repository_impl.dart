@@ -23,7 +23,8 @@ class AddTransactionRepositoryImpl implements AddTransactionRepository {
   }
 
   @override
-  Future<Either<Failure, List<AddTransactionEntity>>> getAllTransactions() async {
+  Future<Either<Failure, List<AddTransactionEntity>>>
+      getAllTransactions() async {
     try {
       final models = await localDataSource.getAllTransactions();
       final entities = models.map((model) => model.toEntity()).toList();

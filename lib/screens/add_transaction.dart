@@ -1,17 +1,20 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import '../models/transaction.dart';
 import '../services/transaction_service.dart';
 import '../services/category_service.dart';
+import '../utils/currency_formatter.dart';
 
-class AddTransactionScreen extends StatefulWidget {
+class AddTransactionScreen extends ConsumerStatefulWidget {
   const AddTransactionScreen({Key? key}) : super(key: key);
 
   @override
-  State<AddTransactionScreen> createState() => _AddTransactionScreenState();
+  ConsumerState<AddTransactionScreen> createState() =>
+      _AddTransactionScreenState();
 }
 
-class _AddTransactionScreenState extends State<AddTransactionScreen> {
+class _AddTransactionScreenState extends ConsumerState<AddTransactionScreen> {
   final _formKey = GlobalKey<FormState>();
   late String _description;
   late double _amount;
@@ -212,11 +215,11 @@ class _AddTransactionScreenState extends State<AddTransactionScreen> {
 
               // Amount Field
               TextFormField(
-                decoration: const InputDecoration(
-                  labelText: 'Amount (₱)',
+                decoration: InputDecoration(
+                  labelText: 'Amount (${CurrencyFormatter.getSymbol(ref)})',
                   hintText: '0.00',
-                  border: OutlineInputBorder(),
-                  prefixIcon: Icon(Icons.money),
+                  border: const OutlineInputBorder(),
+                  prefixIcon: const Icon(Icons.money),
                 ),
                 keyboardType:
                     const TextInputType.numberWithOptions(decimal: true),

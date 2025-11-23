@@ -1,18 +1,21 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../models/transaction.dart';
 import '../services/transaction_service.dart';
+import '../utils/currency_formatter.dart';
 
-class EditTransactionScreen extends StatefulWidget {
+class EditTransactionScreen extends ConsumerStatefulWidget {
   final String transactionId;
 
   const EditTransactionScreen({Key? key, required this.transactionId})
       : super(key: key);
 
   @override
-  State<EditTransactionScreen> createState() => _EditTransactionScreenState();
+  ConsumerState<EditTransactionScreen> createState() =>
+      _EditTransactionScreenState();
 }
 
-class _EditTransactionScreenState extends State<EditTransactionScreen> {
+class _EditTransactionScreenState extends ConsumerState<EditTransactionScreen> {
   final _formKey = GlobalKey<FormState>();
   late TransactionModel _transaction;
   late String _description;
@@ -87,8 +90,9 @@ class _EditTransactionScreenState extends State<EditTransactionScreen> {
               ),
               const SizedBox(height: 12),
               TextFormField(
-                decoration: const InputDecoration(
-                    labelText: 'Amount (₱)', border: OutlineInputBorder()),
+                decoration: InputDecoration(
+                    labelText: 'Amount (${CurrencyFormatter.getSymbol(ref)})',
+                    border: const OutlineInputBorder()),
                 keyboardType: TextInputType.numberWithOptions(decimal: true),
                 initialValue: _amount.toString(),
                 onSaved: (v) => _amount = double.tryParse(v ?? '') ?? 0.0,

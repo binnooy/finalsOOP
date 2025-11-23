@@ -57,6 +57,34 @@ class TransactionModel extends HiveObject {
     notes = '';
   }
 
+  /// Convert to JSON-serializable map
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'description': description,
+      'category': category,
+      'amount': amount,
+      'date': date.toIso8601String(),
+      'type': type.toString().split('.').last,
+      'notes': notes,
+    };
+  }
+
+  /// Create from JSON map
+  factory TransactionModel.fromJson(Map<String, dynamic> map) {
+    return TransactionModel(
+      id: map['id'] as String?,
+      description: map['description'] as String? ?? '',
+      category: map['category'] as String? ?? '',
+      amount: (map['amount'] is num) ? (map['amount'] as num).toDouble() : 0.0,
+      date: DateTime.tryParse(map['date'] as String? ?? '') ?? DateTime.now(),
+      type: (map['type'] as String? ?? 'expense') == 'income'
+          ? TransactionType.income
+          : TransactionType.expense,
+      notes: map['notes'] as String? ?? '',
+    );
+  }
+
   @override
   bool operator ==(Object other) {
     if (identical(this, other)) return true;

@@ -1,17 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../models/transaction.dart';
 import '../services/transaction_service.dart';
 import '../widgets/summary_card.dart';
+import '../utils/currency_formatter.dart';
 import 'edit_transaction.dart';
 
-class DashboardScreen extends StatefulWidget {
+class DashboardScreen extends ConsumerStatefulWidget {
   const DashboardScreen({Key? key}) : super(key: key);
 
   @override
-  State<DashboardScreen> createState() => _DashboardScreenState();
+  ConsumerState<DashboardScreen> createState() => _DashboardScreenState();
 }
 
-class _DashboardScreenState extends State<DashboardScreen> {
+class _DashboardScreenState extends ConsumerState<DashboardScreen> {
   String _filter = 'Month';
   late Future<List<TransactionModel>> _transactionsFuture;
 
@@ -104,19 +106,19 @@ class _DashboardScreenState extends State<DashboardScreen> {
                       children: [
                         SummaryCard(
                           title: 'Income',
-                          amount: '₱${income.toStringAsFixed(2)}',
+                          amount: income,
                           color: Colors.green,
                           icon: Icons.arrow_downward,
                         ),
                         SummaryCard(
                           title: 'Expenses',
-                          amount: '₱${expenses.toStringAsFixed(2)}',
+                          amount: expenses,
                           color: Colors.red,
                           icon: Icons.arrow_upward,
                         ),
                         SummaryCard(
                           title: 'Balance',
-                          amount: '₱${balance.toStringAsFixed(2)}',
+                          amount: balance,
                           color: Colors.blue,
                           icon: Icons.account_balance_wallet,
                         ),
@@ -150,6 +152,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
                           separatorBuilder: (_, __) => const Divider(),
                           itemBuilder: (context, i) {
                             final t = list[i];
+                            final currencySymbol =
+                                CurrencyFormatter.getSymbol(ref);
                             return ListTile(
                               leading: CircleAvatar(
                                 backgroundColor:
@@ -170,7 +174,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                   '${t.category} • ${t.date.toLocal().toString().split(' ').first}'),
                               trailing: Text(
                                 (t.type == TransactionType.income ? '+' : '-') +
-                                    '₱${t.amount.toStringAsFixed(2)}',
+                                    '$currencySymbol${t.amount.toStringAsFixed(2)}',
                                 style: TextStyle(
                                   color: t.type == TransactionType.income
                                       ? Colors.green
