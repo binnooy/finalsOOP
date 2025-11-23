@@ -48,31 +48,8 @@ class _SettingsDebugPanelState extends ConsumerState<SettingsDebugPanel> {
                   ),
                 ],
               ),
-              const SizedBox(height: 16),
-              // Test 2: Export Data
-              _buildTestSection(
-                title: '2️⃣ TEST EXPORT DATA',
-                buttons: [
-                  ElevatedButton(
-                    onPressed: _testExportData,
-                    child: const Text('Export Data as JSON'),
-                  ),
-                ],
-              ),
-              const SizedBox(height: 16),
-              // Test 3: Clear Data
-              _buildTestSection(
-                title: '3️⃣ TEST CLEAR DATA',
-                buttons: [
-                  ElevatedButton(
-                    onPressed: _testClearData,
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.red,
-                    ),
-                    child: const Text('Clear All Data'),
-                  ),
-                ],
-              ),
+              // Export/Clear tests removed
+              const SizedBox(height: 8),
               const SizedBox(height: 16),
               // Test 4: Check Current Values
               _buildTestSection(
@@ -219,32 +196,10 @@ class _SettingsDebugPanelState extends ConsumerState<SettingsDebugPanel> {
   }
 
   Future<void> _testExportData() async {
-    try {
-      print('📤 Exporting data...');
-      final jsonData = await SettingsService.exportDataAsJson();
-      print('✅ Data exported successfully');
-      print('📋 Data:\n$jsonData');
-
-      setState(() {
-        _lastMessage =
-            '✅ SUCCESS: Data exported\n\nLength: ${jsonData.length} chars\n\n$jsonData';
-      });
-
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('✅ Data exported to clipboard'),
-          backgroundColor: Colors.green,
-        ),
-      );
-    } catch (e) {
-      print('❌ Error exporting: $e');
-      setState(() {
-        _lastMessage = '❌ ERROR: $e';
-      });
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('❌ Error: $e'), backgroundColor: Colors.red),
-      );
-    }
+    // Export functionality removed
+    setState(() {
+      _lastMessage = 'Export functionality has been removed';
+    });
   }
 
   Future<void> _testClearData() async {
@@ -269,33 +224,10 @@ class _SettingsDebugPanelState extends ConsumerState<SettingsDebugPanel> {
 
     if (confirmed != true) return;
 
-    try {
-      print('🗑️ Clearing all data...');
-      await SettingsService.clearAllData();
-      print('✅ All data cleared');
-
-      var stats = SettingsService.getDataStatistics();
-      print('📊 Stats after clear: $stats');
-
-      setState(() {
-        _lastMessage = '✅ SUCCESS: All data cleared\n\nStats: $stats';
-      });
-
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('✅ All data cleared successfully'),
-          backgroundColor: Colors.green,
-        ),
-      );
-    } catch (e) {
-      print('❌ Error clearing: $e');
-      setState(() {
-        _lastMessage = '❌ ERROR: $e';
-      });
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('❌ Error: $e'), backgroundColor: Colors.red),
-      );
-    }
+    // Clear functionality removed
+    setState(() {
+      _lastMessage = 'Clear functionality has been removed';
+    });
   }
 
   void _checkCurrentValues() {

@@ -37,21 +37,7 @@ class SettingsScreen extends ConsumerWidget {
           ),
           const SizedBox(height: 24),
 
-          // Data Management Section
-          Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: Text(
-              'Data Management',
-              style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                    fontWeight: FontWeight.bold,
-                  ),
-            ),
-          ),
-          Card(
-            margin: const EdgeInsets.symmetric(horizontal: 16.0),
-            child: const DataManagementSection(),
-          ),
-          const SizedBox(height: 24),
+          // Data management removed
 
           // App Information Section
           Padding(

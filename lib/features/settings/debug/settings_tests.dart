@@ -46,14 +46,8 @@ class _SettingsFeatureTestsState extends ConsumerState<SettingsFeatureTests> {
   }
 
   Future<void> _testExportData() async {
-    try {
-      _showStatus('Testing: Exporting data...');
-      final jsonData = await SettingsService.exportDataAsJson();
-      _showStatus(
-          'SUCCESS: Exported ${jsonData.length} characters\n\n$jsonData');
-    } catch (e) {
-      _showStatus('ERROR: $e');
-    }
+    // Export functionality removed
+    _showStatus('Export functionality has been removed');
   }
 
   Future<void> _testGetStats() async {
@@ -90,15 +84,8 @@ class _SettingsFeatureTestsState extends ConsumerState<SettingsFeatureTests> {
 
     if (!confirmed) return;
 
-    try {
-      _showStatus('Testing: Clearing all data...');
-      await SettingsService.clearAllData();
-      final stats = SettingsService.getDataStatistics();
-      _showStatus(
-          'SUCCESS: Data cleared! Remaining - Transactions: ${stats['transactions']}, Categories: ${stats['categories']}');
-    } catch (e) {
-      _showStatus('ERROR: $e');
-    }
+    // Clear functionality removed
+    _showStatus('Clear functionality has been removed');
   }
 
   @override
@@ -146,15 +133,9 @@ class _SettingsFeatureTestsState extends ConsumerState<SettingsFeatureTests> {
                 ],
               ),
               const SizedBox(height: 12),
-              const Text('Test 2: Export & Stats'),
+              const Text('Test 2: Stats'),
               Row(
                 children: [
-                  Expanded(
-                    child: ElevatedButton(
-                      onPressed: _testExportData,
-                      child: const Text('Export'),
-                    ),
-                  ),
                   const SizedBox(width: 8),
                   Expanded(
                     child: ElevatedButton(

@@ -4,6 +4,7 @@ import '../../services/category_service.dart';
 import '../../services/transaction_service.dart';
 import '../../features/add_transaction/data/models/add_transaction_model.dart';
 import '../../features/history_reports/data/models/history_report_model.dart';
+import '../../features/settings/data/models/settings_model.dart';
 
 /// Central place to register all Hive adapters
 Future<void> registerHiveAdapters() async {
@@ -22,6 +23,11 @@ Future<void> registerHiveAdapters() async {
   // Register HistoryReport adapters
   if (!Hive.isAdapterRegistered(4)) {
     Hive.registerAdapter(HistoryReportModelAdapter());
+  }
+
+  // Register Settings adapter
+  if (!Hive.isAdapterRegistered(10)) {
+    Hive.registerAdapter(SettingsModelAdapter());
   }
 }
 
