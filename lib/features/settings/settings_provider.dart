@@ -1,5 +1,11 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'presentation/settings_controller.dart';
+import 'presentation/settings_state.dart';
+import 'data/datasources/settings_local_datasource.dart';
+import 'data/datasources/settings_local_datasource_impl.dart';
+import 'domain/repositories/settings_repository.dart';
+import 'data/repositories/settings_repository_impl.dart';
 
 /// Provider for theme preference (light/dark/system)
 final themeProvider = StateProvider<String>((ref) {
@@ -74,4 +80,22 @@ final appVersionProvider = Provider<String>((ref) {
 /// App name
 final appNameProvider = Provider<String>((ref) {
   return 'Offline Expense Tracker';
+});
+
+// --- Dependency Injection Providers (DataSource & Repository) ---
+final settingsLocalDataSourceProvider =
+    Provider<SettingsLocalDataSource>((ref) {
+  return SettingsLocalDataSourceImpl();
+});
+
+final settingsRepositoryProvider = Provider<SettingsRepository>((ref) {
+  final ds = ref.read(settingsLocalDataSourceProvider);
+  return SettingsRepositoryImpl(localDataSource: ds);
+});
+
+// StateNotifier controller provider
+final settingsControllerProvider =
+    StateNotifierProvider<SettingsController, SettingsState>((ref) {
+  final repo = ref.read(settingsRepositoryProvider);
+  return SettingsController(repo);
 });

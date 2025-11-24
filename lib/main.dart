@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'core/hive/hive_adapter_registration.dart';
+import 'core/theme.dart';
 import 'features/settings/settings_provider.dart';
-import 'screens/dashboard.dart';
 import 'screens/add_transaction.dart';
 import 'screens/settings.dart';
 import 'screens/categories.dart';
 import 'screens/history_reports.dart';
+import 'widgets/main_bottom_nav.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -28,20 +29,9 @@ class MyApp extends ConsumerWidget {
       debugShowCheckedModeBanner: false,
       title: 'Offline Expense Tracker',
       themeMode: _getThemeMode(themeMode),
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.teal),
-        useMaterial3: true,
-        brightness: Brightness.light,
-      ),
-      darkTheme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(
-          seedColor: Colors.teal,
-          brightness: Brightness.dark,
-        ),
-        useMaterial3: true,
-        brightness: Brightness.dark,
-      ),
-      home: const DashboardScreen(),
+      theme: AppTheme.light(),
+      darkTheme: AppTheme.dark(),
+      home: const MainBottomNav(),
       routes: {
         '/add': (context) => const AddTransactionScreen(),
         '/settings': (context) => const SettingsScreen(),
